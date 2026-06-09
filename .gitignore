@@ -1,0 +1,28 @@
+# Build output
+bin/
+obj/
+publish/
+artifacts/
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.user
+*.suo
+*.rsuser
+
+# Test output
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Runtime / logs
+*.log
+*.tmp
+
+# Release binaries are uploaded to GitHub Releases, not committed.
+*.exe
+*.dll
+*.pdb
+*.nupkg
