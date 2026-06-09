@@ -154,12 +154,23 @@ public partial class MainWindow : Window
     {
         trayIcon = new WinForms.NotifyIcon
         {
-            Icon = System.Drawing.SystemIcons.Application,
+            Icon = LoadTrayIcon(),
             Text = "Codex LED Widget",
             Visible = true,
             ContextMenuStrip = BuildTrayMenu()
         };
         trayIcon.Click += (_, _) => ToggleWindow();
+    }
+
+    private static System.Drawing.Icon LoadTrayIcon()
+    {
+        System.Windows.Resources.StreamResourceInfo? iconResource = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/Resources/App.ico"));
+        if (iconResource is null)
+        {
+            return System.Drawing.SystemIcons.Application;
+        }
+
+        return new System.Drawing.Icon(iconResource.Stream);
     }
 
     private WinForms.ContextMenuStrip BuildTrayMenu()
