@@ -73,4 +73,66 @@ public sealed class QuotaSnapshotTests
         Assert.AreEqual("1w", meter.Right.ShortLabel);
         Assert.AreEqual(32, meter.Right.RemainingPercent);
     }
+
+    [TestMethod]
+    public void WidgetLayoutUsesPanelAndFloatingOrbModes()
+    {
+        WidgetWindowLayout panel = WidgetLayout.ForMode(WidgetViewMode.Panel);
+        WidgetWindowLayout orb = WidgetLayout.ForMode(WidgetViewMode.FloatingOrb);
+
+        Assert.AreEqual(460, panel.Width);
+        Assert.AreEqual(292, panel.Height);
+        Assert.AreEqual(320, panel.MinWidth);
+        Assert.AreEqual(203, panel.MinHeight);
+        Assert.IsTrue(panel.CanResize);
+
+        Assert.AreEqual(138, orb.Width);
+        Assert.AreEqual(138, orb.Height);
+        Assert.AreEqual(138, orb.MinWidth);
+        Assert.AreEqual(138, orb.MinHeight);
+        Assert.IsFalse(orb.CanResize);
+    }
+
+    [TestMethod]
+    public void DisplayAdjustmentTemporarilyReducesOnlyPrimaryQuota()
+    {
+        QuotaSnapshot snapshot = new(
+            LimitId: "codex",
+            LimitName: "Codex",
+            PlanType: "pro",
+            Primary: new QuotaWindow(UsedPercent: 39, RemainingPercent: 61, WindowDuration: TimeSpan.FromMinutes(300), ResetsAt: null),
+            Secondary: new QuotaWindow(UsedPercent: 81, RemainingPercent: 19, WindowDuration: TimeSpan.FromMinutes(10080), ResetsAt: null),
+            FetchedAt: DateTimeOffset.Now);
+
+        QuotaDisplayAdjustment adjustment = QuotaDisplayAdjustment.PrimaryRemainingDelta(-1);
+        QuotaSnapshot adjusted = adjustment.Apply(snapshot);
+
+        Assert.AreEqual(60, adjusted.Primary?.RemainingPercent);
+        Assert.AreEqual(40, adjusted.Primary?.UsedPercent);
+        Assert.AreEqual(19, adjusted.Secondary?.RemainingPercent);
+        Assert.AreEqual(81, adjusted.Secondary?.UsedPercent);
+        Assert.AreEqual(61, snapshot.Primary?.RemainingPercent);
+    }
+
+    [TestMethod]
+    public void DisplayAdjustmentCanAccumulateRepeatedPrimaryPenalties()
+    {
+        QuotaSnapshot snapshot = new(
+            LimitId: "codex",
+            LimitName: "Codex",
+            PlanType: "pro",
+            Primary: new QuotaWindow(UsedPercent: 3, RemainingPercent: 97, WindowDuration: TimeSpan.FromMinutes(300), ResetsAt: null),
+            Secondary: new QuotaWindow(UsedPercent: 82, RemainingPercent: 18, WindowDuration: TimeSpan.FromMinutes(10080), ResetsAt: null),
+            FetchedAt: DateTimeOffset.Now);
+
+        QuotaDisplayAdjustment adjustment = QuotaDisplayAdjustment
+            .PrimaryRemainingDelta(-1)
+            .AddPrimaryRemainingDelta(-1);
+
+        QuotaSnapshot adjusted = adjustment.Apply(snapshot);
+
+        Assert.AreEqual(95, adjusted.Primary?.RemainingPercent);
+        Assert.AreEqual(5, adjusted.Primary?.UsedPercent);
+        Assert.AreEqual(18, adjusted.Secondary?.RemainingPercent);
+    }
 }
