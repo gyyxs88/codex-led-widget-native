@@ -90,12 +90,12 @@ public partial class MainWindow : Window
         QuotaSnapshot displaySnapshot = ApplyDisplayAdjustment(snapshot);
         int remaining = displaySnapshot.RemainingPercent ?? 0;
         RenderMeter(DualQuotaMeter.FromSnapshot(displaySnapshot, CultureName));
-        PrimaryLabel.Text = isEnglish ? "5h window" : "5小时窗口";
-        SecondaryLabel.Text = isEnglish ? "7d window" : "7天窗口";
-        PlanLabel.Text = isEnglish ? "Plan" : "计划";
+        PrimaryLabel.Text = QuotaTextFormatter.FormatWindowLabel(displaySnapshot.Primary, CultureName);
+        SecondaryLabel.Text = QuotaTextFormatter.FormatWindowLabel(displaySnapshot.Secondary, CultureName);
+        PlanLabel.Text = isEnglish ? "Plan / resets" : "计划 / 重置额度";
         PrimaryText.Text = QuotaTextFormatter.FormatWindow(displaySnapshot.Primary, CultureName);
         SecondaryText.Text = QuotaTextFormatter.FormatWindow(displaySnapshot.Secondary, CultureName);
-        PlanText.Text = QuotaTextFormatter.FormatPlan(displaySnapshot.PlanType);
+        PlanText.Text = QuotaTextFormatter.FormatPlanSummary(displaySnapshot.PlanType, displaySnapshot.ResetCreditsAvailable, CultureName);
         StateText.Text = remaining <= 0 ? (isEnglish ? "Empty" : "耗尽") : remaining < 10 ? (isEnglish ? "Low" : "偏低") : (isEnglish ? "Ready" : "可用");
         StatusText.Text = $"{(isEnglish ? "Updated" : "已更新")} {DateTime.Now:HH:mm}";
         SetStateBrush(remaining <= 0 ? Colors.IndianRed : remaining < 10 ? System.Windows.Media.Color.FromRgb(241, 183, 47) : System.Windows.Media.Color.FromRgb(24, 182, 115));
