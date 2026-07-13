@@ -174,18 +174,18 @@ public static class CodexCommandResolver
             candidates.Add(explicitPath);
         }
 
+        candidates.AddRange(FindOnPath());
+
         string? localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         if (!string.IsNullOrWhiteSpace(localAppData))
         {
             candidates.Add(Path.Combine(localAppData, "OpenAI", "Codex", "bin", "codex.exe"));
         }
 
-        candidates.AddRange(FindOnPath());
         return candidates
             .Where(path => !string.IsNullOrWhiteSpace(path))
-            .OrderByDescending(path => Path.GetExtension(path).Equals(".exe", StringComparison.OrdinalIgnoreCase))
-            .ThenBy(path => path.EndsWith(".cmd", StringComparison.OrdinalIgnoreCase) ? 1 : 2)
             .Distinct(StringComparer.OrdinalIgnoreCase)
+            .Where(File.Exists)
             .ToArray();
     }
 
@@ -197,7 +197,7 @@ public static class CodexCommandResolver
             yield break;
         }
 
-        string[] names = ["codex.exe", "codex.cmd", "codex"];
+        string[] names = ["codex.exe", "codex.cmd", "codex.bat", "codex"];
         foreach (string directory in pathValue.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries))
         {
             foreach (string name in names)
