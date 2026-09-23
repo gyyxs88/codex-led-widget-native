@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 
@@ -7,6 +8,9 @@ namespace CodexLedWidget.Core;
 public sealed class CodexQuotaClient
 {
     private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(12);
+
+    /// <summary>客户端版本号，取自程序集版本，唯一来源是根目录 Directory.Build.props。</summary>
+    private static readonly string ClientVersion = ResolveClientVersion();
 
     public async Task<QuotaSnapshot> GetQuotaAsync(CancellationToken cancellationToken = default)
     {
@@ -42,7 +46,7 @@ public sealed class CodexQuotaClient
                 {
                     name = "codex-led-widget-native",
                     title = "Codex LED Widget",
-                    version = "0.1.0"
+                    version = ClientVersion
                 },
                 capabilities = (object?)null
             }, timeout.Token).ConfigureAwait(false);
@@ -138,6 +142,23 @@ public sealed class CodexQuotaClient
         }
 
         throw new InvalidOperationException("Codex app-server 没有返回额度结果。");
+    }
+
+    private static string ResolveClientVersion()
+    {
+        Assembly assembly = typeof(CodexQuotaClient).Assembly;
+        string? informational = assembly
+            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+            .InformationalVersion;
+
+        if (!string.IsNullOrWhiteSpace(informational))
+        {
+            int metadataIndex = informational.IndexOf('+');
+            return metadataIndex >= 0 ? informational[..metadataIndex] : informational;
+        }
+
+        Version? version = assembly.GetName().Version;
+        return version is null ? "0.0.0" : $"{version.Major}.{version.Minor}.{version.Build}";
     }
 }
 

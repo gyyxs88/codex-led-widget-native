@@ -1,0 +1,10 @@
+<Project>
+
+  <PropertyGroup>
+    <!-- 全解决方案唯一的版本号来源，与 git tag 保持一致；发新版本时只改这一处。 -->
+    <Version>0.1.3</Version>
+    <!-- 产品版本保持干净的 0.1.3，不附加源码修订号。 -->
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+  </PropertyGroup>
+
+</Project>

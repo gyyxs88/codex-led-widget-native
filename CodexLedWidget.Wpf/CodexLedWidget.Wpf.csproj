@@ -8,6 +8,8 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net9.0-windows</TargetFramework>
     <ApplicationIcon>Resources\App.ico</ApplicationIcon>
+    <Product>Codex LED Widget</Product>
+    <AssemblyTitle>Codex LED Widget</AssemblyTitle>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
