@@ -73,7 +73,7 @@ public partial class MainWindow : Window
         {
             StateText.Text = isEnglish ? "Error" : "读取失败";
             StatusText.Text = ex.Message;
-            RenderMeter(DualQuotaMeter.FromSnapshot(CreateEmptySnapshot(), CultureName));
+            RenderMeter(QuotaOrbMeter.FromSnapshot(CreateEmptySnapshot()));
             SetStateBrush(Colors.IndianRed);
         }
     }
@@ -89,7 +89,7 @@ public partial class MainWindow : Window
     {
         QuotaSnapshot displaySnapshot = ApplyDisplayAdjustment(snapshot);
         int remaining = displaySnapshot.RemainingPercent ?? 0;
-        RenderMeter(DualQuotaMeter.FromSnapshot(displaySnapshot, CultureName));
+        RenderMeter(QuotaOrbMeter.FromSnapshot(displaySnapshot));
         PrimaryLabel.Text = QuotaTextFormatter.FormatWindowLabel(displaySnapshot.Primary, CultureName);
         SecondaryLabel.Text = QuotaTextFormatter.FormatWindowLabel(displaySnapshot.Secondary, CultureName);
         PlanLabel.Text = isEnglish ? "Plan / resets" : "计划 / 重置额度";
@@ -117,7 +117,7 @@ public partial class MainWindow : Window
             FetchedAt: DateTimeOffset.Now);
     }
 
-    private void RenderMeter(DualQuotaMeter meter)
+    private void RenderMeter(QuotaOrbMeter meter)
     {
         PanelQuotaOrb.Render(meter);
         FloatingQuotaOrb.Render(meter);

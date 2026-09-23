@@ -19,12 +19,6 @@ public static class QuotaTextFormatter
 
     public static string FormatWindowShortLabel(QuotaWindow window)
     {
-        if (!string.IsNullOrWhiteSpace(window.LimitName) &&
-            window.LimitName.Contains("Spark", StringComparison.OrdinalIgnoreCase))
-        {
-            return "Spark";
-        }
-
         return FormatWindowDuration(window.WindowDuration, "en-US", shortForm: true);
     }
 

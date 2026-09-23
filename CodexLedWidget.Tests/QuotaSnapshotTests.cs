@@ -71,15 +71,15 @@ public sealed class QuotaSnapshotTests
         """;
 
         QuotaSnapshot snapshot = QuotaSnapshotParser.ParseRateLimitsResponse(json);
-        DualQuotaMeter meter = DualQuotaMeter.FromSnapshot(snapshot, "zh-CN");
+        QuotaOrbMeter orb = QuotaOrbMeter.FromSnapshot(snapshot);
 
         Assert.AreEqual("codex", snapshot.Primary?.LimitId);
         Assert.AreEqual(99, snapshot.Primary?.RemainingPercent);
         Assert.AreEqual("codex_bengalfox", snapshot.Secondary?.LimitId);
         Assert.AreEqual("GPT-5.3-Codex-Spark", snapshot.Secondary?.LimitName);
         Assert.AreEqual(3, snapshot.ResetCreditsAvailable);
-        Assert.AreEqual("1w", meter.Left.ShortLabel);
-        Assert.AreEqual("Spark", meter.Right.ShortLabel);
+        Assert.AreEqual("1w", orb.ShortLabel);
+        Assert.AreEqual(99, orb.RemainingPercent);
         Assert.AreEqual("Codex · 7天窗口", QuotaTextFormatter.FormatWindowLabel(snapshot.Primary, "zh-CN"));
         Assert.AreEqual("Pro · 3 次可用重置", QuotaTextFormatter.FormatPlanSummary(snapshot.PlanType, snapshot.ResetCreditsAvailable, "zh-CN"));
     }
@@ -101,7 +101,7 @@ public sealed class QuotaSnapshotTests
     }
 
     [TestMethod]
-    public void DualQuotaMeterUsesPrimaryForLeftAndSecondaryForRight()
+    public void QuotaOrbMeterPrefersWeeklyWindowOverShorterWindow()
     {
         QuotaSnapshot snapshot = new(
             LimitId: "codex",
@@ -111,12 +111,35 @@ public sealed class QuotaSnapshotTests
             Secondary: new QuotaWindow(UsedPercent: 68, RemainingPercent: 32, WindowDuration: TimeSpan.FromMinutes(10080), ResetsAt: null),
             FetchedAt: DateTimeOffset.Now);
 
-        DualQuotaMeter meter = DualQuotaMeter.FromSnapshot(snapshot, "zh-CN");
+        QuotaOrbMeter orb = QuotaOrbMeter.FromSnapshot(snapshot);
 
-        Assert.AreEqual("5h", meter.Left.ShortLabel);
-        Assert.AreEqual(73, meter.Left.RemainingPercent);
-        Assert.AreEqual("1w", meter.Right.ShortLabel);
-        Assert.AreEqual(32, meter.Right.RemainingPercent);
+        Assert.IsTrue(orb.HasData);
+        Assert.AreEqual("1w", orb.ShortLabel);
+        Assert.AreEqual(32, orb.RemainingPercent);
+        Assert.AreEqual("32%", orb.PercentText);
+    }
+
+    [TestMethod]
+    public void QuotaOrbMeterFallsBackToOnlyWindowAndClearsWithoutData()
+    {
+        QuotaSnapshot shortOnly = new(
+            LimitId: "codex",
+            LimitName: "Codex",
+            PlanType: "pro",
+            Primary: new QuotaWindow(UsedPercent: 55, RemainingPercent: 45, WindowDuration: TimeSpan.FromMinutes(300), ResetsAt: null),
+            Secondary: null,
+            FetchedAt: DateTimeOffset.Now);
+
+        QuotaOrbMeter orb = QuotaOrbMeter.FromSnapshot(shortOnly);
+
+        Assert.AreEqual("5h", orb.ShortLabel);
+        Assert.AreEqual(45, orb.RemainingPercent);
+
+        QuotaOrbMeter blank = QuotaOrbMeter.FromSnapshot(shortOnly with { Primary = null });
+
+        Assert.IsFalse(blank.HasData);
+        Assert.AreEqual("--", blank.ShortLabel);
+        Assert.AreEqual("--", blank.PercentText);
     }
 
     [TestMethod]

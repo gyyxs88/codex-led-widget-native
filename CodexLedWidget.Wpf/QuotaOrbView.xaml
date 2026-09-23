@@ -26,29 +26,46 @@
                 </Ellipse.Fill>
             </Ellipse>
 
-            <Grid x:Name="PrimaryHalfFill"
-                  Width="59"
+            <Grid x:Name="OrbFill"
+                  Width="118"
                   Height="0"
-                  HorizontalAlignment="Left"
+                  HorizontalAlignment="Center"
                   VerticalAlignment="Bottom"
                   ClipToBounds="True">
+                <Rectangle Height="2"
+                           VerticalAlignment="Top"
+                           Fill="#8CE8FFF6" />
+
+                <Ellipse Width="3.5"
+                         Height="3.5"
+                         Margin="86,26,0,0"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Fill="#72C8FFF0" />
+                <Ellipse Width="3"
+                         Height="3"
+                         Margin="72,52,0,0"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Fill="#7CFFFFFF" />
+
                 <Ellipse Width="6"
                          Height="6"
-                         Margin="10,24,0,0"
+                         Margin="21,31,0,0"
                          HorizontalAlignment="Left"
                          VerticalAlignment="Top"
                          Fill="#66FFFFFF">
                     <Ellipse.RenderTransform>
-                        <TranslateTransform x:Name="PrimaryBubbleA" />
+                        <TranslateTransform x:Name="OrbBubbleA" />
                     </Ellipse.RenderTransform>
                     <Ellipse.Triggers>
                         <EventTrigger RoutedEvent="Loaded">
                             <BeginStoryboard>
                                 <Storyboard RepeatBehavior="Forever" AutoReverse="True">
-                                    <DoubleAnimation Storyboard.TargetName="PrimaryBubbleA"
+                                    <DoubleAnimation Storyboard.TargetName="OrbBubbleA"
                                                      Storyboard.TargetProperty="Y"
                                                      From="0"
-                                                     To="-7"
+                                                     To="-8"
                                                      Duration="0:0:3.4" />
                                     <DoubleAnimation Storyboard.TargetProperty="Opacity"
                                                      From="0.35"
@@ -59,37 +76,24 @@
                         </EventTrigger>
                     </Ellipse.Triggers>
                 </Ellipse>
-                <Ellipse Width="3.5"
-                         Height="3.5"
-                         Margin="39,38,0,0"
-                         HorizontalAlignment="Left"
-                         VerticalAlignment="Top"
-                         Fill="#72C8FFF0" />
-            </Grid>
 
-            <Grid x:Name="SecondaryHalfFill"
-                  Width="59"
-                  Height="0"
-                  HorizontalAlignment="Right"
-                  VerticalAlignment="Bottom"
-                  ClipToBounds="True">
                 <Ellipse Width="5"
                          Height="5"
-                         Margin="14,26,0,0"
+                         Margin="49,63,0,0"
                          HorizontalAlignment="Left"
                          VerticalAlignment="Top"
                          Fill="#6EDAF7FF">
                     <Ellipse.RenderTransform>
-                        <TranslateTransform x:Name="SecondaryBubbleA" />
+                        <TranslateTransform x:Name="OrbBubbleB" />
                     </Ellipse.RenderTransform>
                     <Ellipse.Triggers>
                         <EventTrigger RoutedEvent="Loaded">
                             <BeginStoryboard>
                                 <Storyboard RepeatBehavior="Forever" AutoReverse="True">
-                                    <DoubleAnimation Storyboard.TargetName="SecondaryBubbleA"
+                                    <DoubleAnimation Storyboard.TargetName="OrbBubbleB"
                                                      Storyboard.TargetProperty="Y"
                                                      From="0"
-                                                     To="-5"
+                                                     To="-6"
                                                      Duration="0:0:3.9" />
                                     <DoubleAnimation Storyboard.TargetProperty="Opacity"
                                                      From="0.3"
@@ -100,12 +104,6 @@
                         </EventTrigger>
                     </Ellipse.Triggers>
                 </Ellipse>
-                <Ellipse Width="3"
-                         Height="3"
-                         Margin="41,35,0,0"
-                         HorizontalAlignment="Left"
-                         VerticalAlignment="Top"
-                         Fill="#7CFFFFFF" />
             </Grid>
 
             <Ellipse Width="130"
@@ -149,11 +147,6 @@
                   StrokeStartLineCap="Round"
                   StrokeEndLineCap="Round"
                   Opacity="0.72" />
-
-            <Rectangle Width="1"
-                       HorizontalAlignment="Center"
-                       Fill="#243747"
-                       Opacity="0.13" />
         </Grid>
 
         <Ellipse Stroke="#6638FBD2"
@@ -172,51 +165,24 @@
                  StrokeThickness="1"
                  Fill="Transparent" />
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock x:Name="PrimaryMeterLabel"
-                           Text="5h"
-                           FontSize="10"
-                           LineHeight="14"
-                           LineStackingStrategy="BlockLineHeight"
-                           FontWeight="SemiBold"
-                           TextAlignment="Center"
-                           Foreground="{StaticResource WidgetMutedBrush}" />
-                <TextBlock x:Name="PrimaryMeterPercent"
-                           Text="--"
-                           Margin="0,4,0,0"
-                           FontSize="17"
-                           LineHeight="24"
-                           LineStackingStrategy="BlockLineHeight"
-                           FontWeight="Bold"
-                           TextAlignment="Center"
-                           Foreground="{StaticResource WidgetTextBrush}" />
-            </StackPanel>
-
-            <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock x:Name="SecondaryMeterLabel"
-                           Text="1w"
-                           FontSize="10"
-                           LineHeight="14"
-                           LineStackingStrategy="BlockLineHeight"
-                           FontWeight="SemiBold"
-                           TextAlignment="Center"
-                           Foreground="{StaticResource WidgetMutedBrush}" />
-                <TextBlock x:Name="SecondaryMeterPercent"
-                           Text="--"
-                           Margin="0,4,0,0"
-                           FontSize="17"
-                           LineHeight="24"
-                           LineStackingStrategy="BlockLineHeight"
-                           FontWeight="Bold"
-                           TextAlignment="Center"
-                           Foreground="{StaticResource WidgetTextBrush}" />
-            </StackPanel>
-        </Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock x:Name="MeterLabel"
+                       Text="1w"
+                       FontSize="10"
+                       LineHeight="14"
+                       LineStackingStrategy="BlockLineHeight"
+                       FontWeight="SemiBold"
+                       TextAlignment="Center"
+                       Foreground="{StaticResource WidgetMutedBrush}" />
+            <TextBlock x:Name="MeterPercent"
+                       Text="--"
+                       Margin="0,4,0,0"
+                       FontSize="17"
+                       LineHeight="24"
+                       LineStackingStrategy="BlockLineHeight"
+                       FontWeight="Bold"
+                       TextAlignment="Center"
+                       Foreground="{StaticResource WidgetTextBrush}" />
+        </StackPanel>
     </Grid>
 </UserControl>
