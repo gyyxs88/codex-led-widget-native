@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <!-- 全解决方案唯一的版本号来源，与 git tag 保持一致；发新版本时只改这一处。 -->
-    <Version>0.1.4</Version>
+    <Version>0.1.5</Version>
     <!-- 产品版本保持干净的语义化版本号，不附加源码修订号。 -->
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
