@@ -101,6 +101,29 @@ public sealed class QuotaSnapshotTests
     }
 
     [TestMethod]
+    public void AccentColorRunsFromGreenThroughAmberToRed()
+    {
+        Assert.AreEqual(new QuotaAccent(24, 182, 115), QuotaPalette.AccentFor(100));
+        Assert.AreEqual(new QuotaAccent(241, 183, 47), QuotaPalette.AccentFor(50));
+        Assert.AreEqual(new QuotaAccent(228, 72, 92), QuotaPalette.AccentFor(0));
+    }
+
+    [TestMethod]
+    public void AccentColorBlendsBetweenStopsAndClampsOutOfRangeQuota()
+    {
+        Assert.AreEqual(QuotaPalette.AccentFor(100), QuotaPalette.AccentFor(140));
+        Assert.AreEqual(QuotaPalette.AccentFor(0), QuotaPalette.AccentFor(-20));
+
+        QuotaAccent quarter = QuotaPalette.AccentFor(25);
+        Assert.IsTrue(quarter.R > 228, "25% 应比红端更偏橙");
+        Assert.IsTrue(quarter.G > 72 && quarter.G < 183, "25% 的绿分量应介于红、黄之间");
+
+        QuotaAccent threeQuarters = QuotaPalette.AccentFor(75);
+        Assert.IsTrue(threeQuarters.G > 180, "75% 仍应偏绿");
+        Assert.IsTrue(threeQuarters.B > 47, "75% 的蓝分量应高于黄端");
+    }
+
+    [TestMethod]
     public void QuotaOrbMeterPrefersWeeklyWindowOverShorterWindow()
     {
         QuotaSnapshot snapshot = new(

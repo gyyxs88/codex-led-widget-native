@@ -8,162 +8,56 @@
              TextOptions.TextFormattingMode="Display"
              TextOptions.TextRenderingMode="Auto">
     <Grid Width="118" Height="118">
-        <Grid SnapsToDevicePixels="True">
-            <Grid.Clip>
-                <EllipseGeometry Center="59,59" RadiusX="59" RadiusY="59" />
-            </Grid.Clip>
+        <Ellipse Width="112"
+                 Height="112"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center">
+            <Ellipse.Fill>
+                <RadialGradientBrush Center="0.33,0.22"
+                                     GradientOrigin="0.22,0.12"
+                                     RadiusX="0.9"
+                                     RadiusY="0.9">
+                    <GradientStop Color="#FAFFFFFF" Offset="0" />
+                    <GradientStop Color="#D8F2FAFF" Offset="0.45" />
+                    <GradientStop Color="#A8DDEBFF" Offset="1" />
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+        </Ellipse>
 
-            <Ellipse>
-                <Ellipse.Fill>
-                    <RadialGradientBrush Center="0.33,0.22"
-                                         GradientOrigin="0.22,0.12"
-                                         RadiusX="0.9"
-                                         RadiusY="0.9">
-                        <GradientStop Color="#FCFFFFFF" Offset="0" />
-                        <GradientStop Color="#D8F2FAFF" Offset="0.42" />
-                        <GradientStop Color="#A8DDEBFF" Offset="1" />
-                    </RadialGradientBrush>
-                </Ellipse.Fill>
-            </Ellipse>
-
-            <Grid x:Name="OrbFill"
-                  Width="118"
-                  Height="0"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Bottom"
-                  ClipToBounds="True">
-                <Rectangle Height="2"
-                           VerticalAlignment="Top"
-                           Fill="#8CE8FFF6" />
-
-                <Ellipse Width="3.5"
-                         Height="3.5"
-                         Margin="86,26,0,0"
-                         HorizontalAlignment="Left"
-                         VerticalAlignment="Top"
-                         Fill="#72C8FFF0" />
-                <Ellipse Width="3"
-                         Height="3"
-                         Margin="72,52,0,0"
-                         HorizontalAlignment="Left"
-                         VerticalAlignment="Top"
-                         Fill="#7CFFFFFF" />
-
-                <Ellipse Width="6"
-                         Height="6"
-                         Margin="21,31,0,0"
-                         HorizontalAlignment="Left"
-                         VerticalAlignment="Top"
-                         Fill="#66FFFFFF">
-                    <Ellipse.RenderTransform>
-                        <TranslateTransform x:Name="OrbBubbleA" />
-                    </Ellipse.RenderTransform>
-                    <Ellipse.Triggers>
-                        <EventTrigger RoutedEvent="Loaded">
-                            <BeginStoryboard>
-                                <Storyboard RepeatBehavior="Forever" AutoReverse="True">
-                                    <DoubleAnimation Storyboard.TargetName="OrbBubbleA"
-                                                     Storyboard.TargetProperty="Y"
-                                                     From="0"
-                                                     To="-8"
-                                                     Duration="0:0:3.4" />
-                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                     From="0.35"
-                                                     To="0.85"
-                                                     Duration="0:0:3.4" />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </Ellipse.Triggers>
-                </Ellipse>
-
-                <Ellipse Width="5"
-                         Height="5"
-                         Margin="49,63,0,0"
-                         HorizontalAlignment="Left"
-                         VerticalAlignment="Top"
-                         Fill="#6EDAF7FF">
-                    <Ellipse.RenderTransform>
-                        <TranslateTransform x:Name="OrbBubbleB" />
-                    </Ellipse.RenderTransform>
-                    <Ellipse.Triggers>
-                        <EventTrigger RoutedEvent="Loaded">
-                            <BeginStoryboard>
-                                <Storyboard RepeatBehavior="Forever" AutoReverse="True">
-                                    <DoubleAnimation Storyboard.TargetName="OrbBubbleB"
-                                                     Storyboard.TargetProperty="Y"
-                                                     From="0"
-                                                     To="-6"
-                                                     Duration="0:0:3.9" />
-                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                     From="0.3"
-                                                     To="0.8"
-                                                     Duration="0:0:3.9" />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </Ellipse.Triggers>
-                </Ellipse>
-            </Grid>
-
-            <Ellipse Width="130"
-                     Height="48"
-                     Margin="-6,75,-6,-5"
-                     VerticalAlignment="Bottom"
-                     Opacity="0.24">
-                <Ellipse.Fill>
-                    <RadialGradientBrush Center="0.5,0.72"
-                                         GradientOrigin="0.5,0.72"
-                                         RadiusX="0.62"
-                                         RadiusY="0.42">
-                        <GradientStop Color="#5537474A" Offset="0" />
-                        <GradientStop Color="#1637474A" Offset="0.58" />
-                        <GradientStop Color="#0037474A" Offset="1" />
-                    </RadialGradientBrush>
-                </Ellipse.Fill>
-            </Ellipse>
-
-            <Ellipse Width="92"
-                     Height="74"
-                     Margin="11,8,0,0"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Top"
-                     Opacity="0.56">
-                <Ellipse.Fill>
-                    <RadialGradientBrush Center="0.34,0.18"
-                                         GradientOrigin="0.24,0.1"
-                                         RadiusX="0.6"
-                                         RadiusY="0.72">
-                        <GradientStop Color="#B8FFFFFF" Offset="0" />
-                        <GradientStop Color="#40FFFFFF" Offset="0.55" />
-                        <GradientStop Color="#00FFFFFF" Offset="1" />
-                    </RadialGradientBrush>
-                </Ellipse.Fill>
-            </Ellipse>
-
-            <Path Data="M24,22 C35,12 54,8 72,13"
-                  Stroke="#95FFFFFF"
-                  StrokeThickness="2.2"
-                  StrokeStartLineCap="Round"
-                  StrokeEndLineCap="Round"
-                  Opacity="0.72" />
-        </Grid>
-
-        <Ellipse Stroke="#6638FBD2"
-                 StrokeThickness="2.2"
+        <Ellipse x:Name="OuterRim"
+                 Width="112"
+                 Height="112"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
                  Fill="Transparent"
-                 Margin="-2" />
-        <Ellipse Stroke="#6F7DD3FF"
-                 StrokeThickness="1.6"
+                 Stroke="#3A18CB8B"
+                 StrokeThickness="1.8" />
+
+        <Ellipse Width="80"
+                 Height="80"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
                  Fill="Transparent"
-                 Margin="3" />
-        <Ellipse Stroke="#70FFFFFF"
-                 StrokeThickness="2"
-                 Fill="Transparent"
-                 Margin="1" />
-        <Ellipse Stroke="#2837474A"
-                 StrokeThickness="1"
-                 Fill="Transparent" />
+                 Stroke="#1E37474A"
+                 StrokeThickness="17" />
+
+        <Path x:Name="ProgressArc"
+              StrokeThickness="17"
+              StrokeStartLineCap="Round"
+              StrokeEndLineCap="Round" />
+
+        <Path x:Name="ProgressGloss"
+              StrokeThickness="5"
+              StrokeStartLineCap="Round"
+              StrokeEndLineCap="Round"
+              Opacity="0.45">
+            <Path.Stroke>
+                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                    <GradientStop Color="#D0FFFFFF" Offset="0" />
+                    <GradientStop Color="#20FFFFFF" Offset="0.7" />
+                </LinearGradientBrush>
+            </Path.Stroke>
+        </Path>
 
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock x:Name="MeterLabel"
@@ -176,9 +70,8 @@
                        Foreground="{StaticResource WidgetMutedBrush}" />
             <TextBlock x:Name="MeterPercent"
                        Text="--"
-                       Margin="0,4,0,0"
-                       FontSize="17"
-                       LineHeight="24"
+                       FontSize="22"
+                       LineHeight="28"
                        LineStackingStrategy="BlockLineHeight"
                        FontWeight="Bold"
                        TextAlignment="Center"
